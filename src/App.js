@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useContext} from 'react';
 import './App.css';
+import {Auth0Context}  from './context/auth0-context';
 
 function App() {
+  
+  const { isLoading, user, loginWithRedirect, logout } = useContext(Auth0Context);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Asd</h1>
+      {!isLoading && !user && (
+            <>
+              <h1>Click Below!</h1>
+              <button onClick={loginWithRedirect} className="button is-danger">
+                Login
+              </button>
+            </>
+          )}
+          {/* this is the new section */}
+          {!isLoading && user && (
+            <>
+              <h1>You are logged in!</h1>
+              <p>Hello {user.name}</p>
+
+              {user.picture && <img src={user.picture} alt="My Avatar" />}
+              <button
+                onClick={() => logout({ returnTo: window.location.origin })}
+                className="button is-small is-dark"
+              >
+                Logout
+          </button>
+            </>
+          )}
     </div>
   );
 }
